@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vertebrates Quiz 🦎🐟🐸🦅🐘</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fish: #3B82F6;
+    --amphibia: #22C55E;
+    --reptile: #EAB308;
+    --aves: #EC4899;
+    --mammalia: #A855F7;
+    --bg: #FFF9F0;
+    --card: #ffffff;
+    --text: #1e1b2e;
+  }
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+font-family: ‘Nunito’, sans-serif;
+background: var(–bg);
+background-image:
+radial-gradient(circle at 10% 20%, #dbeafe55 0%, transparent 40%),
+radial-gradient(circle at 90% 80%, #fce7f355 0%, transparent 40%),
+radial-gradient(circle at 50% 50%, #dcfce755 0%, transparent 50%);
+min-height: 100vh;
+padding: 24px 16px 60px;
+color: var(–text);
+}
+
+header {
+text-align: center;
+margin-bottom: 36px;
+position: relative;
+}
+
+header .emoji-row {
+font-size: 2.2rem;
+letter-spacing: 8px;
+margin-bottom: 8px;
+animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-6px); }
+}
+
+header h1 {
+font-family: ‘Fredoka One’, cursive;
+font-size: clamp(1.8rem, 5vw, 3rem);
+background: linear-gradient(135deg, #3B82F6, #22C55E, #EAB308, #EC4899, #A855F7);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+line-height: 1.2;
+margin-bottom: 6px;
+}
+
+header p {
+font-size: 1rem;
+color: #6b7280;
+font-weight: 600;
+}
+
+.progress-wrap {
+max-width: 680px;
+margin: 0 auto 28px;
+}
+
+.progress-label {
+display: flex;
+justify-content: space-between;
+font-size: 0.85rem;
+font-weight: 700;
+color: #6b7280;
+margin-bottom: 6px;
+}
+
+.progress-bar {
+height: 10px;
+background: #e5e7eb;
+border-radius: 99px;
+overflow: hidden;
+}
+
+.progress-fill {
+height: 100%;
+background: linear-gradient(90deg, #3B82F6, #A855F7);
+border-radius: 99px;
+transition: width 0.5s ease;
+width: 0%;
+}
+
+.quiz-container {
+max-width: 680px;
+margin: 0 auto;
+}
+
+.question-card {
+background: var(–card);
+border-radius: 20px;
+padding: 28px 28px 22px;
+margin-bottom: 20px;
+box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+border-left: 6px solid #e5e7eb;
+transition: transform 0.2s, box-shadow 0.2s;
+animation: slideIn 0.4s ease both;
+}
+
+@keyframes slideIn {
+from { opacity: 0; transform: translateY(18px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.question-card:nth-child(5n+1) { border-left-color: var(–fish); }
+.question-card:nth-child(5n+2) { border-left-color: var(–amphibia); }
+.question-card:nth-child(5n+3) { border-left-color: var(–reptile); }
+.question-card:nth-child(5n+4) { border-left-color: var(–aves); }
+.question-card:nth-child(5n+5) { border-left-color: var(–mammalia); }
+
+.question-card:hover {
+transform: translateY(-2px);
+box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+}
+
+.q-header {
+display: flex;
+align-items: flex-start;
+gap: 14px;
+margin-bottom: 16px;
+}
+
+.q-number {
+font-family: ‘Fredoka One’, cursive;
+font-size: 1.4rem;
+min-width: 40px;
+height: 40px;
+border-radius: 12px;
+display: flex;
+align-items: center;
+justify-content: center;
+color: white;
+flex-shrink: 0;
+}
+
+.question-card:nth-child(5n+1) .q-number { background: var(–fish); }
+.question-card:nth-child(5n+2) .q-number { background: var(–amphibia); }
+.question-card:nth-child(5n+3) .q-number { background: var(–reptile); }
+.question-card:nth-child(5n+4) .q-number { background: var(–aves); }
+.question-card:nth-child(5n+5) .q-number { background: var(–mammalia); }
+
+.q-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+
+.q-text {
+font-size: 1.05rem;
+font-weight: 700;
+line-height: 1.45;
+flex: 1;
+}
+
+.options {
+display: grid;
+gap: 10px;
+}
+
+.option {
+display: flex;
+align-items: center;
+gap: 12px;
+padding: 12px 16px;
+border-radius: 12px;
+border: 2px solid #e5e7eb;
+cursor: pointer;
+transition: all 0.2s;
+font-size: 0.95rem;
+font-weight: 600;
+background: #fafafa;
+user-select: none;
+}
+
+.option:hover:not(.locked) {
+border-color: #a5b4fc;
+background: #eef2ff;
+transform: translateX(4px);
+}
+
+.option .opt-letter {
+width: 28px;
+height: 28px;
+border-radius: 8px;
+background: #e5e7eb;
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: ‘Fredoka One’, cursive;
+font-size: 0.9rem;
+flex-shrink: 0;
+transition: background 0.2s, color 0.2s;
+color: #374151;
+}
+
+.option.selected { border-color: #6366f1; background: #eef2ff; }
+.option.selected .opt-letter { background: #6366f1; color: white; }
+
+.option.correct { border-color: #22C55E; background: #f0fdf4; }
+.option.correct .opt-letter { background: #22C55E; color: white; }
+
+.option.wrong { border-color: #ef4444; background: #fef2f2; }
+.option.wrong .opt-letter { background: #ef4444; color: white; }
+
+.option.locked { cursor: default; }
+
+.feedback {
+margin-top: 12px;
+padding: 10px 14px;
+border-radius: 10px;
+font-size: 0.9rem;
+font-weight: 700;
+display: none;
+}
+
+.feedback.show { display: flex; align-items: center; gap: 8px; }
+.feedback.correct-fb { background: #dcfce7; color: #166534; }
+.feedback.wrong-fb { background: #fee2e2; color: #991b1b; }
+
+.score-panel {
+max-width: 680px;
+margin: 0 auto 28px;
+background: white;
+border-radius: 20px;
+padding: 20px 28px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+flex-wrap: wrap;
+gap: 12px;
+}
+
+.score-item {
+text-align: center;
+}
+
+.score-item .val {
+font-family: ‘Fredoka One’, cursive;
+font-size: 2rem;
+line-height: 1;
+}
+
+.score-item .lbl {
+font-size: 0.78rem;
+color: #9ca3af;
+font-weight: 700;
+text-transform: uppercase;
+letter-spacing: 1px;
+margin-top: 2px;
+}
+
+.score-item:nth-child(1) .val { color: #22C55E; }
+.score-item:nth-child(2) .val { color: #ef4444; }
+.score-item:nth-child(3) .val { color: #6366f1; }
+
+.btn-reset {
+font-family: ‘Fredoka One’, cursive;
+font-size: 1.1rem;
+background: linear-gradient(135deg, #6366f1, #A855F7);
+color: white;
+border: none;
+padding: 12px 30px;
+border-radius: 14px;
+cursor: pointer;
+transition: transform 0.15s, box-shadow 0.15s;
+box-shadow: 0 4px 14px rgba(99,102,241,0.4);
+display: block;
+margin: 30px auto 0;
+}
+
+.btn-reset:hover {
+transform: translateY(-2px);
+box-shadow: 0 8px 20px rgba(99,102,241,0.5);
+}
+
+.class-badge {
+display: inline-flex;
+align-items: center;
+gap: 5px;
+font-size: 0.75rem;
+font-weight: 700;
+padding: 3px 10px;
+border-radius: 99px;
+color: white;
+margin-bottom: 10px;
+}
+
+.badge-fish { background: var(–fish); }
+.badge-amphibia { background: var(–amphibia); }
+.badge-reptile { background: var(–reptile); }
+.badge-aves { background: var(–aves); }
+.badge-mammalia { background: var(–mammalia); }
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="emoji-row">🐟 🐸 🦎 🦅 🐘</div>
+  <h1>Vertebrates Quiz</h1>
+  <p>Animals with a backbone — Test your knowledge! 🧠</p>
+</header>
+
+<div class="score-panel">
+  <div class="score-item">
+    <div class="val" id="score-correct">0</div>
+    <div class="lbl">✅ Correct</div>
+  </div>
+  <div class="score-item">
+    <div class="val" id="score-wrong">0</div>
+    <div class="lbl">❌ Wrong</div>
+  </div>
+  <div class="score-item">
+    <div class="val" id="score-left">20</div>
+    <div class="lbl">📝 Remaining</div>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span>Progress</span>
+    <span id="prog-text">0 / 20</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="prog-fill"></div></div>
+</div>
+
+<div class="quiz-container" id="quiz"></div>
+
+<button class="btn-reset" onclick="resetQuiz()">🔄 Reset Quiz</button>
+
+<script>
+const questions = [
+  {
+    icon: "🐟", badge: "badge-fish", badgeLabel: "Class Pisces",
+    text: "What type of body covering do fish (Class Pisces) have?",
+    options: ["Moist, slimy skin", "Scales and fins", "Dry, cornified skin", "Feathers"],
+    answer: 1, feedback: "Fish have scales and also fins — perfect for aquatic life! 🐟"
+  },
+  {
+    icon: "🫁", badge: "badge-fish", badgeLabel: "Class Pisces",
+    text: "How do fish breathe?",
+    options: ["Through lungs", "Through skin", "Through gills", "Through lungs and skin"],
+    answer: 2, feedback: "Fish breathe through gills — they extract oxygen from water! 💧"
+  },
+  {
+    icon: "🐸", badge: "badge-amphibia", badgeLabel: "Class Amphibia",
+    text: "Where do amphibians lay their eggs?",
+    options: ["On land", "In water", "In trees", "Underground"],
+    answer: 1, feedback: "Amphibians lay eggs in water, just like fish! 🌊"
+  },
+  {
+    icon: "🌡️", badge: "badge-amphibia", badgeLabel: "Class Amphibia",
+    text: "What is the blood temperature of amphibians?",
+    options: ["Warm-blooded", "Hot-blooded", "Cold-blooded", "Variable-blooded"],
+    answer: 2, feedback: "Amphibians are cold-blooded — their body temp matches the environment! 🥶"
+  },
+  {
+    icon: "🦎", badge: "badge-reptile", badgeLabel: "Class Reptilia",
+    text: "Which of the following is NOT an example of a reptile?",
+    options: ["Tortoise", "Snake", "Crocodile", "Salamander"],
+    answer: 3, feedback: "Salamander is an amphibian, not a reptile! 🐸"
+  },
+  {
+    icon: "🏠", badge: "badge-reptile", badgeLabel: "Class Reptilia",
+    text: "What is the typical habitat of reptiles?",
+    options: ["Only water", "Only land", "Land or water", "Only trees"],
+    answer: 2, feedback: "Reptiles live on land or water — very adaptable! 🦎"
+  },
+  {
+    icon: "🦅", badge: "badge-aves", badgeLabel: "Class Aves",
+    text: "What type of body covering do birds (Class Aves) have?",
+    options: ["Scales", "Hair or fur", "Feathers", "Moist skin"],
+    answer: 2, feedback: "Birds are uniquely covered with feathers — for flight and warmth! 🪶"
+  },
+  {
+    icon: "🦶", badge: "badge-aves", badgeLabel: "Class Aves",
+    text: "What type of feet/legs do birds have?",
+    options: ["Four limbs", "No legs", "Webbed feet", "Claws on their toes (two)"],
+    answer: 3, feedback: "Birds have two legs with claws on their toes! 🦅"
+  },
+  {
+    icon: "🐘", badge: "badge-mammalia", badgeLabel: "Class Mammalia",
+    text: "How do mammals reproduce?",
+    options: ["Lay eggs in water", "Lay eggs on land", "Give birth to young ones", "Budding"],
+    answer: 2, feedback: "Mammals give birth to live young ones — that's what makes them special! 🐣"
+  },
+  {
+    icon: "❤️", badge: "badge-mammalia", badgeLabel: "Class Mammalia",
+    text: "What type of heart do mammals have?",
+    options: ["Two-chambered", "Three-chambered", "Single-chambered", "Four-chambered"],
+    answer: 3, feedback: "Mammals have a four-chambered heart — highly efficient! ❤️"
+  },
+  {
+    icon: "🌡️", badge: "badge-aves", badgeLabel: "Class Aves",
+    text: "Birds are ___-blooded animals.",
+    options: ["Cold", "Warm", "Hot", "None of the above"],
+    answer: 1, feedback: "Birds are warm-blooded, just like mammals! 🔥"
+  },
+  {
+    icon: "🐊", badge: "badge-reptile", badgeLabel: "Class Reptilia",
+    text: "Which class do crocodiles belong to?",
+    options: ["Class Amphibia", "Class Pisces", "Class Reptilia", "Class Mammalia"],
+    answer: 2, feedback: "Crocodiles are reptiles — dry, scaly, cold-blooded! 🐊"
+  },
+  {
+    icon: "🐸", badge: "badge-amphibia", badgeLabel: "Class Amphibia",
+    text: "How do amphibians breathe?",
+    options: ["Only through gills", "Only through lungs", "Through lungs and skin", "Through feathers"],
+    answer: 2, feedback: "Amphibians breathe through both lungs AND skin — double duty! 💪"
+  },
+  {
+    icon: "🔬", badge: "badge-fish", badgeLabel: "Class Pisces",
+    text: "Which of the following is an example of Class Pisces?",
+    options: ["Frog", "Parrot", "Rohu", "Camel"],
+    answer: 2, feedback: "Rohu is a classic example of Class Pisces (fish)! 🐟"
+  },
+  {
+    icon: "🦁", badge: "badge-mammalia", badgeLabel: "Class Mammalia",
+    text: "What body covering do mammals have?",
+    options: ["Scales", "Feathers", "Dry cornified skin", "Hair or fur"],
+    answer: 3, feedback: "Mammals are covered in hair or fur to keep them warm! 🐾"
+  },
+  {
+    icon: "🏊", badge: "badge-fish", badgeLabel: "Class Pisces",
+    text: "What is the habitat of fish?",
+    options: ["Land", "Air", "Water/Aquatic", "Land and water"],
+    answer: 2, feedback: "Fish live in water — they're fully aquatic animals! 💦"
+  },
+  {
+    icon: "🦜", badge: "badge-aves", badgeLabel: "Class Aves",
+    text: "Which of the following is an example of Class Aves?",
+    options: ["Lizard", "Turtle", "Frog", "Penguin"],
+    answer: 3, feedback: "Penguin is a bird (Class Aves) — even though it can't fly! 🐧"
+  },
+  {
+    icon: "🥚", badge: "badge-reptile", badgeLabel: "Class Reptilia",
+    text: "Where do reptiles lay their eggs?",
+    options: ["In water", "On land", "In the air", "Underground water"],
+    answer: 1, feedback: "Reptiles lay their eggs on land — with leathery shells! 🥚"
+  },
+  {
+    icon: "🦵", badge: "badge-amphibia", badgeLabel: "Class Amphibia",
+    text: "How many legs do amphibians typically have?",
+    options: ["No legs", "2 legs", "4 (webbed feet)", "6 legs"],
+    answer: 2, feedback: "Amphibians have 4 webbed feet — perfect for swimming and jumping! 🐸"
+  },
+  {
+    icon: "🌍", badge: "badge-mammalia", badgeLabel: "Class Mammalia",
+    text: "What is the habitat of mammals?",
+    options: ["Only land", "Only water", "Only air", "Land or water"],
+    answer: 3, feedback: "Mammals live on land or water — think dolphins, whales, and humans! 🐳"
+  }
+];
+
+let correct = 0, wrong = 0, answered = 0;
+
+function buildQuiz() {
+  const container = document.getElementById('quiz');
+  container.innerHTML = '';
+  questions.forEach((q, i) => {
+    const letters = ['A','B','C','D'];
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.style.animationDelay = `${i * 0.05}s`;
+    card.innerHTML = `
+      <div>
+        <span class="class-badge ${q.badge}">${q.icon} ${q.badgeLabel}</span>
+      </div>
+      <div class="q-header">
+        <div class="q-number">Q${i+1}</div>
+        <div class="q-text">${q.text}</div>
+      </div>
+      <div class="options" id="opts-${i}">
+        ${q.options.map((opt, oi) => `
+          <div class="option" id="opt-${i}-${oi}" onclick="selectAnswer(${i}, ${oi})">
+            <span class="opt-letter">${letters[oi]}</span>
+            <span>${opt}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div class="feedback" id="fb-${i}"></div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function selectAnswer(qIdx, optIdx) {
+  const q = questions[qIdx];
+  const opts = document.querySelectorAll(`#opts-${qIdx} .option`);
+  
+  // Check if already answered
+  if (opts[0].classList.contains('locked')) return;
+
+  // Lock all options
+  opts.forEach(o => o.classList.add('locked'));
+
+  // Mark selected
+  opts[optIdx].classList.add('selected');
+
+  const fb = document.getElementById(`fb-${qIdx}`);
+
+  if (optIdx === q.answer) {
+    opts[optIdx].classList.remove('selected');
+    opts[optIdx].classList.add('correct');
+    fb.className = 'feedback show correct-fb';
+    fb.innerHTML = `✅ ${q.feedback}`;
+    correct++;
+    document.getElementById('score-correct').textContent = correct;
+  } else {
+    opts[optIdx].classList.remove('selected');
+    opts[optIdx].classList.add('wrong');
+    opts[q.answer].classList.add('correct');
+    fb.className = 'feedback show wrong-fb';
+    fb.innerHTML = `❌ Wrong! ${q.feedback}`;
+    wrong++;
+    document.getElementById('score-wrong').textContent = wrong;
+  }
+
+  answered++;
+  document.getElementById('score-left').textContent = 20 - answered;
+  document.getElementById('prog-text').textContent = `${answered} / 20`;
+  document.getElementById('prog-fill').style.width = `${(answered/20)*100}%`;
+}
+
+function resetQuiz() {
+  correct = 0; wrong = 0; answered = 0;
+  document.getElementById('score-correct').textContent = 0;
+  document.getElementById('score-wrong').textContent = 0;
+  document.getElementById('score-left').textContent = 20;
+  document.getElementById('prog-text').textContent = '0 / 20';
+  document.getElementById('prog-fill').style.width = '0%';
+  buildQuiz();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+buildQuiz();
+</script>
+
+</body>
+</html>
